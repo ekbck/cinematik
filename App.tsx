@@ -1,20 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {FunctionComponent} from 'react'
+import {NavigationContainer} from '@react-navigation/native'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import AppNavigation from './app/navigation/AppNavigation'
+
+import Home from './app/screens/Home'
+import Booking from './app/screens/Booking'
+import CustomFlatList from './app/components/CustomFlatList'
+import SelectSeat from './app/screens/SelectSeat'
+import TicketView from './app/screens/TicketView'
+
+const App = () => {
+	return (
+		<NavigationContainer>
+			<AppNavigation />
+		</NavigationContainer>
+	)
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
