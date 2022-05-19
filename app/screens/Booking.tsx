@@ -68,7 +68,8 @@ const Booking: FunctionComponent<BookingProps> = ({navigation, route}) => {
 					<View
 						style={{
 							flexGrow: 1,
-							justifyContent: 'space-between'
+							justifyContent: 'space-evenly',
+							paddingBottom: 60
 						}}
 					>
 						<MovieInfo
@@ -76,10 +77,6 @@ const Booking: FunctionComponent<BookingProps> = ({navigation, route}) => {
 							movie={movie}
 						/>
 						<Calender weekdays={days} />
-						<Button
-							onPress={() => navigation.navigate('SelectSeat')}
-							title={'Book'}
-						/>
 					</View>
 				</View>
 			</SafeAreaView>

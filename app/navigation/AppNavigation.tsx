@@ -23,7 +23,10 @@ export type AppNavigationParamList = {
 		length: string
 		timeSlots: []
 	}
-	SelectSeat: undefined
+	SelectSeat: {
+		dayId: ObjectId
+		time: string
+	}
 	TicketView: undefined
 }
 

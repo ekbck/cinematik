@@ -1,11 +1,23 @@
 import {ObjectId} from 'mongoose'
 import {FunctionComponent, useEffect, useState} from 'react'
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native'
+import {
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	TouchableHighlight,
+	View,
+	ViewStyle,
+	StyleProp
+} from 'react-native'
 import {AntDesign} from '@expo/vector-icons'
+import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import {useNavigation} from '@react-navigation/native'
+import {AppNavigationParamList} from '../navigation/AppNavigation'
 
 import colors from '../config/colors'
+import Day from '../../api/models/Day'
 
-export type CalenderProps = {
+type CalenderProps = {
 	weekdays: [
 		{
 			_id: ObjectId
@@ -23,22 +35,44 @@ export type CalenderProps = {
 }
 
 const Calender: FunctionComponent<CalenderProps> = ({weekdays}) => {
-	const day = weekdays.find((day) => day.weekday === 'TUE')
-	const seats: any = day?.timeSlots.map((slot) => slot.seats)
-	console.log(seats)
+	const navigation =
+		useNavigation<NativeStackNavigationProp<AppNavigationParamList>>()
+
+	const [chosenWeekday, setChosenWeekday] = useState<string>('TUE')
+	const day = weekdays.find((day) => day.weekday === chosenWeekday)
 
 	return (
 		<View style={styles.calender}>
 			<View style={styles.weekdayWrapper}>
 				{weekdays.map((day) => (
-					<View style={styles.weekday}>
+					<TouchableOpacity
+						onPress={() => setChosenWeekday(day.weekday)}
+						style={[
+							styles.weekday,
+							chosenWeekday === day.weekday && {
+								borderWidth: 2,
+								borderColor: colors.darkPurple,
+								paddingHorizontal: 12,
+								paddingVertical: 13
+							}
+						]}
+					>
 						<Text style={styles.weekdayText}>{day.weekday}</Text>
-					</View>
+					</TouchableOpacity>
 				))}
 			</View>
 			<View style={styles.timeSlotWrapper}>
 				{day?.timeSlots.map((slot) => (
-					<View style={styles.timeSlot}>
+					<TouchableOpacity
+						onPress={() => {
+							const pickedTimeSlot = {
+								dayId: day._id,
+								time: slot.time
+							}
+							navigation.navigate('SelectSeat', pickedTimeSlot)
+						}}
+						style={styles.timeSlot}
+					>
 						<Text style={styles.timeSlotText}>{slot.time}</Text>
 						<Text
 							style={[
@@ -59,7 +93,7 @@ const Calender: FunctionComponent<CalenderProps> = ({weekdays}) => {
 							size={20}
 							color={colors.white}
 						/>
-					</View>
+					</TouchableOpacity>
 				))}
 			</View>
 		</View>
@@ -69,7 +103,10 @@ const Calender: FunctionComponent<CalenderProps> = ({weekdays}) => {
 export default Calender
 
 const styles = StyleSheet.create({
-	calender: {},
+	calender: {
+		flexGrow: 1,
+		justifyContent: 'space-evenly'
+	},
 	weekdayWrapper: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
@@ -79,13 +116,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderWidth: 1,
-		width: 50,
-		height: 40,
+		paddingHorizontal: 10,
+		paddingVertical: 12,
 		borderColor: colors.borderGrey,
 		borderRadius: 8
 	},
 	weekdayText: {
 		color: colors.white,
+		textAlign: 'center',
 		fontFamily: 'Helvetica',
 		letterSpacing: 1
 	},

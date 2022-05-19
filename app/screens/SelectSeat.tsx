@@ -1,3 +1,6 @@
+import {RouteProp} from '@react-navigation/native'
+import {NativeStackNavigationProp} from '@react-navigation/native-stack'
+import {ObjectId} from 'mongoose'
 import {FunctionComponent, useEffect, useState} from 'react'
 
 import {
@@ -15,14 +18,55 @@ import FaceId from '../components/FaceId'
 
 import colors from '../config/colors'
 import {SEATS} from '../config/seats'
+import {AppNavigationParamList} from '../navigation/AppNavigation'
 
-type SelectSeatProps = {}
+type SelectSeatProps = {
+	navigation: NativeStackNavigationProp<AppNavigationParamList, 'SelectSeat'>
+	route: RouteProp<AppNavigationParamList, 'SelectSeat'>
+}
 
-const SelectSeat: FunctionComponent<SelectSeatProps> = () => {
+type Seat = {
+	_id: ObjectId
+	row: string
+	chair: string
+	available: boolean
+}
+
+const SelectSeat: FunctionComponent<SelectSeatProps> = ({
+	navigation,
+	route
+}) => {
+	const {dayId, time} = route.params
 	const [selectedSeats, setSelectedSeats] = useState<string[]>([])
 	const [modalVisible, setModalVisible] = useState<boolean>(false)
+	const [seats, setSeats] = useState<Seat[]>([])
 
-	const [newTodoText, setNewTodoText] = useState<string>('')
+	const getData = async () => {
+		try {
+			const response = await fetch(
+				'http://192.168.0.15:9000/days/movie/' + dayId + '/' + time,
+				{
+					method: 'GET'
+				}
+			)
+			if (response.ok) {
+				const data = (await processResponse(response)).data
+				setSeats(data)
+			}
+		} catch (error: any) {
+			console.log(error.message)
+		}
+	}
+
+	async function processResponse(response: Response) {
+		const statusCode = response.status
+		const data = response.json()
+		const res = await Promise.all([statusCode, data])
+		return {
+			statusCode: res[0],
+			data: res[1]
+		}
+	}
 
 	const handleSeatSelection = (seatNumber: string) => {
 		if (selectedSeats.includes(seatNumber)) {
@@ -34,8 +78,8 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = () => {
 	}
 
 	useEffect(() => {
-		console.log(selectedSeats)
-	}, [[selectedSeats]])
+		getData()
+	}, [])
 
 	return (
 		<View style={styles.wrapper}>
@@ -50,24 +94,25 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = () => {
 				<Text style={styles.headerTitle}>Select seats</Text>
 				<View style={styles.neon}></View>
 				<View style={styles.seats}>
-					{SEATS.map((item) => {
+					{seats.map((item) => {
+						const itemId = JSON.stringify(item._id)
 						return (
 							<TouchableOpacity
-								key={item.id}
+								key={itemId}
 								style={[
 									styles.seat,
-									selectedSeats.includes(item.id) &&
+									selectedSeats.includes(itemId) &&
 										styles.selectedSeat
 								]}
 								onPress={() => {
-									handleSeatSelection(item.id)
+									handleSeatSelection(itemId)
 								}}
 							>
 								<View
 									style={[
 										styles.seat,
 										styles.seatInner,
-										selectedSeats.includes(item.id) &&
+										selectedSeats.includes(itemId) &&
 											styles.selectedSeat
 									]}
 								></View>
@@ -76,7 +121,7 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = () => {
 					})}
 				</View>
 				<View style={styles.buttonWrapper}>
-					{selectedSeats.length > 0 && (
+					{selectedSeats.length > 0 && !modalVisible && (
 						<Button
 							onPress={() => setModalVisible(true)}
 							title={'Confirm (' + selectedSeats.length + ')'}

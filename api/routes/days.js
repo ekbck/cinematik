@@ -29,10 +29,21 @@ router.get('/movie/:movieId', async (req, res) => {
 		const days = await Day.find({movieId: req.params.movieId})
 		res.json(days)
 	} catch (error) {
-		res.json({message: error})
+		res.json({message: error.message})
 	}
 })
 
-// GET
+// GET SEATS BY MOVIE-ID, DATE AND TIME
+router.get('/movie/:dayId/:time', async (req, res) => {
+	try {
+		const day = await Day.findById(req.params.dayId)
+		const timeSlot = day.timeSlots.find(
+			(slot) => slot?.time === req.params.time
+		)
+		res.json(timeSlot.seats)
+	} catch (error) {
+		res.json({message: error.message})
+	}
+})
 
 module.exports = router
