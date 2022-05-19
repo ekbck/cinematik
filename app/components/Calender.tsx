@@ -1,14 +1,6 @@
 import {ObjectId} from 'mongoose'
-import {FunctionComponent, useEffect, useState} from 'react'
-import {
-	StyleSheet,
-	Text,
-	TouchableOpacity,
-	TouchableHighlight,
-	View,
-	ViewStyle,
-	StyleProp
-} from 'react-native'
+import {FunctionComponent, useState} from 'react'
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native'
 import {AntDesign} from '@expo/vector-icons'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {useNavigation} from '@react-navigation/native'

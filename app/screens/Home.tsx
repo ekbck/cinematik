@@ -24,6 +24,7 @@ const Home: FunctionComponent<HomeProps> = ({navigation}) => {
 			<Background />
 			<View style={{width: '100%'}}>
 				<View style={{paddingTop: 50}}>
+					<View style={styles.infoWrapper}></View>
 					<CustomFlatList />
 				</View>
 			</View>
@@ -44,10 +45,9 @@ const styles = StyleSheet.create({
 		backgroundColor: colors.semiTransparent,
 		width: '100%',
 		height: '40%',
+		position: 'absolute',
 		bottom: 0,
 		marginTop: 30,
-		padding: 18,
-		justifyContent: 'space-around',
 		borderTopLeftRadius: 16,
 		borderTopRightRadius: 16
 	}

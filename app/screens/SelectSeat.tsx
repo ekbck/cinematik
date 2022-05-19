@@ -2,13 +2,13 @@ import {RouteProp} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {ObjectId} from 'mongoose'
 import {FunctionComponent, useEffect, useState} from 'react'
+import {MaterialCommunityIcons} from '@expo/vector-icons'
 
 import {
 	Modal,
 	SafeAreaView,
 	StyleSheet,
 	Text,
-	TextInput,
 	TouchableOpacity,
 	View
 } from 'react-native'
@@ -17,7 +17,6 @@ import Button from '../components/Button'
 import FaceId from '../components/FaceId'
 
 import colors from '../config/colors'
-import {SEATS} from '../config/seats'
 import {AppNavigationParamList} from '../navigation/AppNavigation'
 
 type SelectSeatProps = {
@@ -84,6 +83,7 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 	return (
 		<View style={styles.wrapper}>
 			<Background />
+			<View style={styles.overlay}></View>
 			<SafeAreaView
 				style={{
 					width: '100%',
@@ -102,20 +102,21 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 								style={[
 									styles.seat,
 									selectedSeats.includes(itemId) &&
-										styles.selectedSeat
+										styles.selectedSeat,
+									!item.available && styles.bookedSeat
 								]}
 								onPress={() => {
 									handleSeatSelection(itemId)
 								}}
+								disabled={!item.available}
 							>
-								<View
-									style={[
-										styles.seat,
-										styles.seatInner,
-										selectedSeats.includes(itemId) &&
-											styles.selectedSeat
-									]}
-								></View>
+								{!item.available && (
+									<MaterialCommunityIcons
+										name='slash-forward'
+										size={24}
+										color={colors.darkGrey}
+									/>
+								)}
 							</TouchableOpacity>
 						)
 					})}
@@ -163,6 +164,14 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		height: '100%'
 	},
+	overlay: {
+		position: 'absolute',
+		top: 0,
+		bottom: 0,
+		left: 0,
+		right: 0,
+		backgroundColor: colors.semiTransparent
+	},
 	headerTitle: {
 		color: colors.white,
 		fontFamily: 'Helvetica',
@@ -207,20 +216,14 @@ const styles = StyleSheet.create({
 		borderBottomRightRadius: 10,
 		margin: 5
 	},
-	seatInner: {
-		height: 26,
-		width: 25,
-		borderWidth: 0.5,
-		borderTopWidth: 0,
-		borderTopLeftRadius: 0,
-		borderTopRightRadius: 0,
-		borderBottomLeftRadius: 5,
-		borderBottomRightRadius: 5,
-		marginTop: -3
-	},
 	selectedSeat: {
+		backgroundColor: colors.darkPurple,
 		borderColor: colors.darkPurple,
 		borderWidth: 1.5
+	},
+	bookedSeat: {
+		borderColor: colors.darkGrey,
+		borderWidth: 2
 	},
 	buttonWrapper: {
 		width: '100%',
