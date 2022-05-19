@@ -27,9 +27,7 @@ router.get('/:dayId', async (req, res) => {
 router.get('/movie/:movieId', async (req, res) => {
 	try {
 		const days = await Day.find({movieId: req.params.movieId})
-		const weekdays = []
-		days.forEach((day) => weekdays.push(day.weekday))
-		res.json(weekdays)
+		res.json(days)
 	} catch (error) {
 		res.json({message: error})
 	}
