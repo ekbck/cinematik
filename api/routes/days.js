@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const mongoose = require('mongoose')
 
 const Day = require('../models/Day')
 
@@ -33,14 +34,32 @@ router.get('/movie/:movieId', async (req, res) => {
 	}
 })
 
-// GET SEATS BY MOVIE-ID, DATE AND TIME
-router.get('/movie/:dayId/:time', async (req, res) => {
+// GET SEATS BY DAY-ID AND TIME
+router.get('/:dayId/:time', async (req, res) => {
 	try {
 		const day = await Day.findById(req.params.dayId)
 		const timeSlot = day.timeSlots.find(
 			(slot) => slot?.time === req.params.time
 		)
 		res.json(timeSlot.seats)
+	} catch (error) {
+		res.json({message: error.message})
+	}
+})
+
+// UPDATE SEAT AVAILABILITY
+router.patch('/seat/:dayId/:seatId', async (req, res) => {
+	try {
+		const day = await Day.findById(req.params.dayId)
+		const timeSlot = day.timeSlots.find(
+			(slot) => slot.time === req.body.time
+		)
+		const seat = timeSlot.seats?.find(
+			(seat) => seat._id == req.params.seatId
+		)
+		seat.available = false
+		day.save()
+		res.json(seat)
 	} catch (error) {
 		res.json({message: error.message})
 	}

@@ -43,7 +43,7 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 	const getData = async () => {
 		try {
 			const response = await fetch(
-				'http://192.168.0.15:9000/days/movie/' + dayId + '/' + time,
+				'http://192.168.0.15:9000/days/' + dayId + '/' + time,
 				{
 					method: 'GET'
 				}
@@ -64,6 +64,36 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 		return {
 			statusCode: res[0],
 			data: res[1]
+		}
+	}
+
+	console.log(
+		'http://192.168.0.15:9000/days/seat/' + dayId + '/' + selectedSeats[0]
+	)
+
+	const updateSeat = async () => {
+		const data = {time: time}
+		try {
+			const response = await fetch(
+				'http://192.168.0.15:9000/days/seat/' +
+					dayId +
+					'/' +
+					selectedSeats[0],
+				{
+					method: 'PATCH',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(data)
+				}
+			)
+			console.log(response)
+			if (response.ok) {
+				const data = (await processResponse(response)).data
+				console.log(data)
+			}
+		} catch (error: any) {
+			console.log(error.message)
 		}
 	}
 
@@ -95,7 +125,7 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 				<View style={styles.neon}></View>
 				<View style={styles.seats}>
 					{seats.map((item) => {
-						const itemId = JSON.stringify(item._id)
+						const itemId = item._id.toString()
 						return (
 							<TouchableOpacity
 								key={itemId}
@@ -124,7 +154,9 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 				<View style={styles.buttonWrapper}>
 					{selectedSeats.length > 0 && !modalVisible && (
 						<Button
-							onPress={() => setModalVisible(true)}
+							onPress={() => {
+								setModalVisible(true), updateSeat()
+							}}
 							title={'Confirm (' + selectedSeats.length + ')'}
 						/>
 					)}
