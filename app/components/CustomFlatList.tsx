@@ -78,18 +78,7 @@ const CustomFlatList: FunctionComponent<CustomFlatListProps> = () => {
 							<View style={{width: '100%', alignItems: 'center'}}>
 								<Button
 									onPress={() => {
-										const movie = {
-											_id: item._id,
-											title: item.title,
-											image: item.image,
-											director: item.director,
-											leads: item.leads,
-											year: item.year,
-											summary: item.summary,
-											length: item.length,
-											timeSlots: item.timeSlots
-										}
-										navigation.navigate('Booking', movie)
+										navigation.navigate('Booking', item)
 									}}
 									title={'Book'}
 								/>

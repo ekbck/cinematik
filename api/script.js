@@ -5,7 +5,6 @@ const Seat = require('./models/Seat')
 const mongoose = require('mongoose')
 
 const seats = require('./seats')
-const {$where} = require('./models/Day')
 
 mongoose.connect('mongodb://localhost/cinematik', () =>
 	console.log('Script connected to DB!')
@@ -18,16 +17,12 @@ async function run() {
 	const row = '01'
 	const chair = '01'
 
-	const dayId = '6282a796e6adf17d0cedca76'
+	const dayId = '6284bf90c821c508b2fea342'
 	const time = '20:00'
 	const seatId = '6284e8ab6f799668f1eb72c7'
 	try {
 		const day = await Day.findById(dayId)
-		const timeSlot = day.timeSlots.find((slot) => slot?.time === time)
-		const seat = timeSlot.seats.find(
-			(seat) => seat?._id.toString() === seatId
-		)
-		console.log(seat)
+		console.log(day)
 	} catch (error) {
 		console.log(error.message)
 	}

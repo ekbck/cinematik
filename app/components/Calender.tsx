@@ -30,7 +30,7 @@ const Calender: FunctionComponent<CalenderProps> = ({weekdays}) => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<AppNavigationParamList>>()
 
-	const [chosenWeekday, setChosenWeekday] = useState<string>('TUE')
+	const [chosenWeekday, setChosenWeekday] = useState<string>('SAT')
 	const day = weekdays.find((day) => day.weekday === chosenWeekday)
 
 	return (

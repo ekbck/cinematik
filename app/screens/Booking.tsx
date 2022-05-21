@@ -1,13 +1,17 @@
 import {FunctionComponent, useEffect, useState} from 'react'
-import {Image, SafeAreaView, StyleSheet, Text, View} from 'react-native'
-import {RouteProp, useNavigation} from '@react-navigation/native'
+import {
+	Image,
+	SafeAreaView,
+	StyleSheet,
+	TouchableOpacity,
+	View
+} from 'react-native'
+import {RouteProp} from '@react-navigation/native'
 import {AntDesign} from '@expo/vector-icons'
 
-import {DATA} from '../config/movies'
 import MovieInfo from '../components/MovieInfo'
 import colors from '../config/colors'
 import Background from '../components/Background'
-import Button from '../components/Button'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {AppNavigationParamList} from '../navigation/AppNavigation'
 import Calender from '../components/Calender'
@@ -64,6 +68,21 @@ const Booking: FunctionComponent<BookingProps> = ({navigation, route}) => {
 				}}
 			>
 				<View style={styles.infoWrapper}>
+					<TouchableOpacity
+						style={{
+							alignSelf: 'flex-end',
+							right: 15,
+							top: 15,
+							position: 'absolute'
+						}}
+						onPress={() => navigation.goBack()}
+					>
+						<AntDesign
+							name='closecircleo'
+							size={30}
+							color={colors.borderGrey}
+						/>
+					</TouchableOpacity>
 					<Image source={{uri: movie.image}} style={styles.poster} />
 					<View
 						style={{

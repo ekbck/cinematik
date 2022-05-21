@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {ObjectId} from 'mongoose'
 import {FunctionComponent, useEffect, useState} from 'react'
-import {MaterialCommunityIcons} from '@expo/vector-icons'
+import {MaterialCommunityIcons, AntDesign} from '@expo/vector-icons'
 
 import {
 	Modal,
@@ -150,6 +150,16 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 					alignItems: 'center'
 				}}
 			>
+				<TouchableOpacity
+					style={{alignSelf: 'flex-start', marginLeft: 30}}
+					onPress={() => navigation.goBack()}
+				>
+					<AntDesign
+						name='arrowleft'
+						size={30}
+						color={colors.borderGrey}
+					/>
+				</TouchableOpacity>
 				<Text style={styles.headerTitle}>Select seats</Text>
 				<View style={styles.neon}></View>
 				<View style={styles.seats}>
@@ -291,7 +301,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 		alignItems: 'center',
 		height: '13%',
-		justifyContent: 'flex-end'
+		justifyContent: 'flex-start'
 	},
 	modalWrapper: {
 		height: '25%',
