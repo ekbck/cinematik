@@ -1,22 +1,9 @@
 import {FunctionComponent} from 'react'
-import {
-	Dimensions,
-	FlatList,
-	Image,
-	ImageBackground,
-	StyleSheet,
-	Text,
-	View
-} from 'react-native'
+import {Dimensions, FlatList, View} from 'react-native'
 const {width, height} = Dimensions.get('window')
 
-import {MaterialCommunityIcons} from '@expo/vector-icons'
-import {LinearGradient} from 'expo-linear-gradient'
-
 import Ticket from './Ticket'
-import colors from '../config/colors'
 
-const SPACING = 10
 const ITEM_WIDTH = width
 const ITEM_HEIGHT = height * 0.85
 

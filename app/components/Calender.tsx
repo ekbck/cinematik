@@ -7,7 +7,6 @@ import {useNavigation} from '@react-navigation/native'
 import {AppNavigationParamList} from '../navigation/AppNavigation'
 
 import colors from '../config/colors'
-import Day from '../../api/models/Day'
 
 type CalenderProps = {
 	weekdays: [

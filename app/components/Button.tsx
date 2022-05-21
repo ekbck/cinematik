@@ -1,5 +1,5 @@
 import {FunctionComponent} from 'react'
-import {StyleSheet, View, Text, TouchableHighlight} from 'react-native'
+import {StyleSheet, Text, TouchableHighlight} from 'react-native'
 
 import colors from '../config/colors'
 

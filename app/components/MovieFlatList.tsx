@@ -1,10 +1,17 @@
-import {FunctionComponent, useEffect, useState} from 'react'
-import {Dimensions, FlatList, Image, StyleSheet, View} from 'react-native'
+import {FunctionComponent} from 'react'
+import {
+	Dimensions,
+	FlatList,
+	Image,
+	StyleSheet,
+	TouchableWithoutFeedback,
+	View
+} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 const {width, height} = Dimensions.get('window')
 
-import MovieInfo from '../components/MovieInfo'
-import Button from '../components/Button'
+import MovieInfo from './MovieInfo'
+import Button from './Button'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
 import {AppNavigationParamList} from '../navigation/AppNavigation'
 
@@ -12,42 +19,13 @@ const SPACING = 10
 const ITEM_WIDTH = width
 const ITEM_HEIGHT = height
 
-type CustomFlatListProps = {}
+type CustomFlatListProps = {
+	movies: any
+}
 
-const url = 'localhost:9000/movies'
-
-const CustomFlatList: FunctionComponent<CustomFlatListProps> = () => {
+const CustomFlatList: FunctionComponent<CustomFlatListProps> = ({movies}) => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<AppNavigationParamList>>()
-	const [movies, setMovies] = useState<any>([])
-
-	useEffect(() => {
-		getMovies()
-	}, [])
-
-	const getMovies = async () => {
-		try {
-			const response = await fetch('http://192.168.0.15:9000/movies', {
-				method: 'GET'
-			})
-			if (response.ok) {
-				const data = (await processResponse(response)).data
-				setMovies(data)
-			}
-		} catch (error: any) {
-			console.log(error.message)
-		}
-	}
-
-	async function processResponse(response: Response) {
-		const statusCode = response.status
-		const data = response.json()
-		const res = await Promise.all([statusCode, data])
-		return {
-			statusCode: res[0],
-			data: res[1]
-		}
-	}
 
 	return (
 		<FlatList
@@ -67,18 +45,24 @@ const CustomFlatList: FunctionComponent<CustomFlatListProps> = () => {
 							alignItems: 'center'
 						}}
 					>
-						<View style={styles.posterWrapper}>
-							<Image
-								source={{uri: item.image}}
-								style={styles.poster}
-							/>
-						</View>
+						<TouchableWithoutFeedback
+							onPress={() =>
+								navigation.navigate('SelectDate', item)
+							}
+						>
+							<View style={styles.posterWrapper}>
+								<Image
+									source={{uri: item.image}}
+									style={styles.poster}
+								/>
+							</View>
+						</TouchableWithoutFeedback>
 						<View style={styles.infoWrapper}>
 							<MovieInfo movie={item} />
 							<View style={{width: '100%', alignItems: 'center'}}>
 								<Button
 									onPress={() => {
-										navigation.navigate('Booking', item)
+										navigation.navigate('SelectDate', item)
 									}}
 									title={'Book'}
 								/>

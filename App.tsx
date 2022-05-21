@@ -5,7 +5,7 @@ import AppNavigation from './app/navigation/AppNavigation'
 
 import Home from './app/screens/Home'
 import Booking from './app/screens/Booking'
-import CustomFlatList from './app/components/CustomFlatList'
+import CustomFlatList from './app/components/MovieFlatList'
 import SelectSeat from './app/screens/SelectSeat'
 import TicketView from './app/screens/TicketView'
 

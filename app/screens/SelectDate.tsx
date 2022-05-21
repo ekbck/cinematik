@@ -17,8 +17,8 @@ import {AppNavigationParamList} from '../navigation/AppNavigation'
 import Calender from '../components/Calender'
 
 type BookingProps = {
-	navigation: NativeStackNavigationProp<AppNavigationParamList, 'Booking'>
-	route: RouteProp<AppNavigationParamList, 'Booking'>
+	navigation: NativeStackNavigationProp<AppNavigationParamList, 'SelectDate'>
+	route: RouteProp<AppNavigationParamList, 'SelectDate'>
 }
 
 const Booking: FunctionComponent<BookingProps> = ({navigation, route}) => {
