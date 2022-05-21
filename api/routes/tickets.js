@@ -3,7 +3,7 @@ const router = express.Router()
 
 const Ticket = require('../models/Ticket')
 
-// POST
+// CREATE TICKETS FROM SELECTED SEATS
 router.post('/', async (req, res) => {
 	const tickets = []
 	req.body.seats?.forEach((seat) =>
