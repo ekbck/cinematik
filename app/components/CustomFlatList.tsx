@@ -3,8 +3,6 @@ import {Dimensions, FlatList, Image, StyleSheet, View} from 'react-native'
 import {useNavigation} from '@react-navigation/native'
 const {width, height} = Dimensions.get('window')
 
-import colors from '../config/colors'
-
 import MovieInfo from '../components/MovieInfo'
 import Button from '../components/Button'
 import {NativeStackNavigationProp} from '@react-navigation/native-stack'
@@ -22,7 +20,6 @@ const CustomFlatList: FunctionComponent<CustomFlatListProps> = () => {
 	const navigation =
 		useNavigation<NativeStackNavigationProp<AppNavigationParamList>>()
 	const [movies, setMovies] = useState<any>([])
-	const [title, setTitle] = useState<string>('')
 
 	useEffect(() => {
 		getMovies()

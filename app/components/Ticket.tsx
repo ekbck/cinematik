@@ -5,17 +5,17 @@ import {MaterialCommunityIcons} from '@expo/vector-icons'
 import {LinearGradient} from 'expo-linear-gradient'
 
 import colors from '../config/colors'
-import {DATA} from '../config/movies'
 
-type TicketProps = {}
+type TicketProps = {
+	ticket: any
+}
 
-const Ticket: FunctionComponent<TicketProps> = (props) => {
-	const movie = DATA[0]
+const Ticket: FunctionComponent<TicketProps> = ({ticket}) => {
 	return (
 		<View style={styles.ticketWrapper}>
 			<View style={styles.imageWrapper}>
 				<ImageBackground
-					source={{uri: movie.image}}
+					source={{uri: ticket.movieImageUrl}}
 					style={styles.imageBackground}
 					imageStyle={styles.image}
 				></ImageBackground>
@@ -29,7 +29,9 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 				>
 					<View style={styles.infoWrapper}>
 						<View style={styles.infoRow}>
-							<Text style={styles.movieTitle}>{movie.title}</Text>
+							<Text style={styles.movieTitle}>
+								{ticket.movieTitle}
+							</Text>
 						</View>
 						<View style={styles.infoRow}>
 							<MaterialCommunityIcons
@@ -37,7 +39,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 								size={24}
 								color={colors.white}
 							/>
-							<Text style={styles.timeInfo}>07.06.2022</Text>
+							<Text style={styles.timeInfo}>{ticket.date}</Text>
 						</View>
 						<View style={styles.infoRow}>
 							<MaterialCommunityIcons
@@ -45,7 +47,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 								size={24}
 								color={colors.white}
 							/>
-							<Text style={styles.timeInfo}>20:00</Text>
+							<Text style={styles.timeInfo}>{ticket.time}</Text>
 						</View>
 					</View>
 				</LinearGradient>
@@ -63,7 +65,9 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 							<Text style={styles.positionDefiner}>Row</Text>
 						</View>
 						<View style={styles.valueWrapper}>
-							<Text style={styles.positionValue}>05</Text>
+							<Text style={styles.positionValue}>
+								{ticket.seat.row}
+							</Text>
 						</View>
 					</View>
 					<View style={styles.positionsWrapper}>
@@ -71,7 +75,9 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 							<Text style={styles.positionDefiner}>Seat</Text>
 						</View>
 						<View style={styles.valueWrapper}>
-							<Text style={styles.positionValue}>04</Text>
+							<Text style={styles.positionValue}>
+								{ticket.seat.chair}
+							</Text>
 						</View>
 					</View>
 				</View>

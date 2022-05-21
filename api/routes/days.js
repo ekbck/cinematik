@@ -88,7 +88,7 @@ router.patch('/seat/:dayId/', async (req, res) => {
 
 		const booking = {
 			date: day.date,
-			time: day.time,
+			time: timeSlot.time,
 			movieTitle: movie.title,
 			movieImageUrl: movie.image,
 			seats: matchedSeats

@@ -27,7 +27,19 @@ export type AppNavigationParamList = {
 		dayId: ObjectId
 		time: string
 	}
-	TicketView: undefined
+	TicketView: [
+		{
+			_id: ObjectId
+			date: String
+			time: String
+			movieTitle: String
+			movieImageUrl: String
+			seat: {
+				row: String
+				chair: String
+			}
+		}
+	]
 }
 
 const AppNavigation = () => {

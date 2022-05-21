@@ -31,6 +31,18 @@ type Seat = {
 	available: boolean
 }
 
+type Ticket = {
+	_id: ObjectId
+	date: String
+	time: String
+	movieTitle: String
+	movieImageUrl: String
+	seat: {
+		row: String
+		chair: String
+	}
+}
+
 const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 	navigation,
 	route
@@ -39,6 +51,11 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 	const [selectedSeats, setSelectedSeats] = useState<string[]>([])
 	const [modalVisible, setModalVisible] = useState<boolean>(false)
 	const [seats, setSeats] = useState<Seat[]>([])
+	const [tickets, setTickets] = useState<any>()
+
+	useEffect(() => {
+		getData()
+	}, [])
 
 	const getData = async () => {
 		try {
@@ -100,7 +117,13 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 			})
 			if (response.ok) {
 				const data = (await processResponse(response)).data
-				console.log(data)
+				setTimeout(
+					() => (
+						navigation.navigate('TicketView', data),
+						setModalVisible(false)
+					),
+					5000
+				)
 			}
 		} catch (error: any) {
 			console.log(error.message)
@@ -115,10 +138,6 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 			setSelectedSeats([...selectedSeats, seatNumber])
 		}
 	}
-
-	useEffect(() => {
-		getData()
-	}, [])
 
 	return (
 		<View style={styles.wrapper}>
@@ -165,15 +184,8 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 					{selectedSeats.length > 0 && !modalVisible && (
 						<Button
 							onPress={() => {
-								setModalVisible(true),
-									updateSeat(),
-									setTimeout(
-										() => (
-											navigation.navigate('TicketView'),
-											setModalVisible(false)
-										),
-										5000
-									)
+								setModalVisible(true)
+								updateSeat()
 							}}
 							title={'Confirm (' + selectedSeats.length + ')'}
 						/>
@@ -188,7 +200,6 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 						<TouchableOpacity
 							onPress={() => {
 								setModalVisible(false)
-								navigation.navigate('TicketView')
 							}}
 							style={{
 								alignItems: 'center',
