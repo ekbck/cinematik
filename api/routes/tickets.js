@@ -5,15 +5,24 @@ const Ticket = require('../models/Ticket')
 
 // POST
 router.post('/', async (req, res) => {
-	const ticket = new Ticket({
-		movie: req.body.movieId,
-		date: req.body.date,
-		time: req.body.time,
-		seat: req.body.seatId
-	})
+	const tickets = []
+	req.body.seats?.forEach((seat) =>
+		tickets.push(
+			new Ticket({
+				date: req.body.date,
+				time: req.body.time,
+				movieTitle: req.body.movieTitle,
+				movieImageUrl: req.body.movieImageUrl,
+				seat: {
+					row: seat.row,
+					chair: seat.chair
+				}
+			})
+		)
+	)
 	try {
-		const savedTicket = await ticket.save()
-		res.json(savedTicket)
+		tickets.forEach((ticket) => ticket.save())
+		res.json(tickets)
 	} catch (error) {
 		res.json({message: error})
 	}

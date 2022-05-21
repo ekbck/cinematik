@@ -67,18 +67,11 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 		}
 	}
 
-	console.log(
-		'http://192.168.0.15:9000/days/seat/' + dayId + '/' + selectedSeats[0]
-	)
-
 	const updateSeat = async () => {
-		const data = {time: time}
+		const data = {time: time, seats: selectedSeats}
 		try {
 			const response = await fetch(
-				'http://192.168.0.15:9000/days/seat/' +
-					dayId +
-					'/' +
-					selectedSeats[0],
+				'http://192.168.0.15:9000/days/seat/' + dayId,
 				{
 					method: 'PATCH',
 					headers: {
@@ -87,7 +80,24 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 					body: JSON.stringify(data)
 				}
 			)
-			console.log(response)
+			if (response.ok) {
+				const data = (await processResponse(response)).data
+				await createTickets(data)
+			}
+		} catch (error: any) {
+			console.log(error.message)
+		}
+	}
+
+	const createTickets = async (data: any) => {
+		try {
+			const response = await fetch('http://192.168.0.15:9000/tickets', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
 			if (response.ok) {
 				const data = (await processResponse(response)).data
 				console.log(data)
@@ -155,7 +165,15 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 					{selectedSeats.length > 0 && !modalVisible && (
 						<Button
 							onPress={() => {
-								setModalVisible(true), updateSeat()
+								setModalVisible(true),
+									updateSeat(),
+									setTimeout(
+										() => (
+											navigation.navigate('TicketView'),
+											setModalVisible(false)
+										),
+										5000
+									)
 							}}
 							title={'Confirm (' + selectedSeats.length + ')'}
 						/>
@@ -170,6 +188,7 @@ const SelectSeat: FunctionComponent<SelectSeatProps> = ({
 						<TouchableOpacity
 							onPress={() => {
 								setModalVisible(false)
+								navigation.navigate('TicketView')
 							}}
 							style={{
 								alignItems: 'center',

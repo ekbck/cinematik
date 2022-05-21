@@ -36,22 +36,28 @@ const Calender: FunctionComponent<CalenderProps> = ({weekdays}) => {
 	return (
 		<View style={styles.calender}>
 			<View style={styles.weekdayWrapper}>
-				{weekdays.map((day) => (
-					<TouchableOpacity
-						onPress={() => setChosenWeekday(day.weekday)}
-						style={[
-							styles.weekday,
-							chosenWeekday === day.weekday && {
-								borderWidth: 2,
-								borderColor: colors.darkPurple,
-								paddingHorizontal: 12,
-								paddingVertical: 13
-							}
-						]}
-					>
-						<Text style={styles.weekdayText}>{day.weekday}</Text>
-					</TouchableOpacity>
-				))}
+				{weekdays.map((day) => {
+					const itemId = day._id.toString()
+					return (
+						<TouchableOpacity
+							key={itemId}
+							onPress={() => setChosenWeekday(day.weekday)}
+							style={[
+								styles.weekday,
+								chosenWeekday === day.weekday && {
+									borderWidth: 2,
+									borderColor: colors.darkPurple,
+									paddingHorizontal: 12,
+									paddingVertical: 13
+								}
+							]}
+						>
+							<Text style={styles.weekdayText}>
+								{day.weekday}
+							</Text>
+						</TouchableOpacity>
+					)
+				})}
 			</View>
 			<View style={styles.timeSlotWrapper}>
 				{day?.timeSlots.map((slot) => (

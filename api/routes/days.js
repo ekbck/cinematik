@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const mongoose = require('mongoose')
 
 const Day = require('../models/Day')
+const Movie = require('../models/Movie')
 
 // GET ALL
 router.get('/', async (req, res) => {
@@ -47,7 +47,7 @@ router.get('/:dayId/:time', async (req, res) => {
 	}
 })
 
-// UPDATE SEAT AVAILABILITY
+// UPDATE 1 SEATS AVAILABILITY
 router.patch('/seat/:dayId/:seatId', async (req, res) => {
 	try {
 		const day = await Day.findById(req.params.dayId)
@@ -55,11 +55,46 @@ router.patch('/seat/:dayId/:seatId', async (req, res) => {
 			(slot) => slot.time === req.body.time
 		)
 		const seat = timeSlot.seats?.find(
-			(seat) => seat._id == req.params.seatId
+			(seat) => seat._id.toString() === req.params.seatId
 		)
 		seat.available = false
 		day.save()
 		res.json(seat)
+	} catch (error) {
+		res.json({message: error.message})
+	}
+})
+
+// UPDATE SEVERAL SEATS
+router.patch('/seat/:dayId/', async (req, res) => {
+	try {
+		const day = await Day.findById(req.params.dayId)
+		const movie = await Movie.findById(day.movieId)
+
+		const timeSlot = day.timeSlots.find(
+			(slot) => slot.time === req.body.time
+		)
+
+		const matchedSeats = []
+		req.body.seats.forEach((seatFromReq) =>
+			matchedSeats.push(
+				timeSlot.seats.find(
+					(seatFromDb) => seatFromDb._id.toString() === seatFromReq
+				)
+			)
+		)
+		matchedSeats.forEach((seat) => (seat.available = false))
+		day.save()
+
+		const booking = {
+			date: day.date,
+			time: day.time,
+			movieTitle: movie.title,
+			movieImageUrl: movie.image,
+			seats: matchedSeats
+		}
+
+		res.json(booking)
 	} catch (error) {
 		res.json({message: error.message})
 	}

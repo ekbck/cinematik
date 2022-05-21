@@ -1,19 +1,13 @@
 const mongoose = require('mongoose')
 
 const ticketSchema = new mongoose.Schema({
-	movie: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: 'Movie',
-		required: true
-	},
-	date: {
-		type: String,
-		required: true
-	},
+	date: String,
 	time: String,
+	movieTitle: String,
+	movieImageUrl: String,
 	seat: {
-		type: mongoose.SchemaTypes.ObjectId,
-		ref: 'Seat'
+		row: String,
+		chair: String
 	}
 })
 

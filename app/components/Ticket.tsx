@@ -10,7 +10,7 @@ import {DATA} from '../config/movies'
 type TicketProps = {}
 
 const Ticket: FunctionComponent<TicketProps> = (props) => {
-	const movie = DATA[1]
+	const movie = DATA[0]
 	return (
 		<View style={styles.ticketWrapper}>
 			<View style={styles.imageWrapper}>
@@ -37,7 +37,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 								size={24}
 								color={colors.white}
 							/>
-							<Text style={styles.timeInfo}>30.04.2022</Text>
+							<Text style={styles.timeInfo}>07.06.2022</Text>
 						</View>
 						<View style={styles.infoRow}>
 							<MaterialCommunityIcons
@@ -45,7 +45,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 								size={24}
 								color={colors.white}
 							/>
-							<Text style={styles.timeInfo}>21:00</Text>
+							<Text style={styles.timeInfo}>20:00</Text>
 						</View>
 					</View>
 				</LinearGradient>
@@ -63,7 +63,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 							<Text style={styles.positionDefiner}>Row</Text>
 						</View>
 						<View style={styles.valueWrapper}>
-							<Text style={styles.positionValue}>03</Text>
+							<Text style={styles.positionValue}>05</Text>
 						</View>
 					</View>
 					<View style={styles.positionsWrapper}>
@@ -71,7 +71,7 @@ const Ticket: FunctionComponent<TicketProps> = (props) => {
 							<Text style={styles.positionDefiner}>Seat</Text>
 						</View>
 						<View style={styles.valueWrapper}>
-							<Text style={styles.positionValue}>08</Text>
+							<Text style={styles.positionValue}>04</Text>
 						</View>
 					</View>
 				</View>
