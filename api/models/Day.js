@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const daysSchema = new mongoose.Schema({
+
+const daySchema = new mongoose.Schema({
 	date: String,
 	weekday: String,
 	movieId: {
@@ -23,4 +24,4 @@ const daysSchema = new mongoose.Schema({
 	]
 })
 
-module.exports = mongoose.model('days', daysSchema)
+module.exports = mongoose.model('days', daySchema)
